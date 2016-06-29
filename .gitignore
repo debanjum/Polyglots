@@ -1,0 +1,16 @@
+# Ignore Testing
+*.wav
+*.bin
+
+# Ignore Build Files
+*.pyc
+*.log
+
+# Ignore Hidden Files except .gitignore
+.*
+!.gitignore
+
+# Editor Backup Files
+*~
+.\#*
+\#*\#
