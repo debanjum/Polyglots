@@ -5,6 +5,7 @@
 # Ignore Build Files
 *.pyc
 *.log
+top_block.py
 
 # Ignore Hidden Files except .gitignore
 .*
