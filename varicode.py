@@ -1,9 +1,9 @@
-import struct
-
-
 # Varicode class for GoodPSK.
-class Varicode:
+class varicode:
     """This class implements the PSK31 varicode alphabet."""
+    def __init__(self):
+        import struct
+        self.varichar = {value: key for key, value in self.characters.iteritems()}
 
     def encode(self, text):
         """Encodes a string to a string of varicoded bits."""
@@ -11,8 +11,7 @@ class Varicode:
 
     def decode(self, bits):
         """Decodes a string of bits to a string of letters."""
-        varicode = {value: key for key, value in self.characters.iteritems()}
-        return ''.join([varicode[bit] for bit in bits.split(self.delim) if bit])
+        return ''.join([self.varichar[bit] for bit in bits.split(self.delim) if bit])
 
     def repeat(self, text, count):
         """returns string with 'text' repeated 'count' times"""
