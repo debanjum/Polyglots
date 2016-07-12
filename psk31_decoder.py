@@ -18,7 +18,7 @@ def butter_lowpass_filter(data, cutoff, fs, order):
     return lfilter(b, a, data)
 
 # Initialise Variables
-SOURCE = sys.argv[1] if len(sys.argv) > 1 else 'psk31.wav'
+SOURCE = sys.argv[1] if len(sys.argv) > 1 else '.psk31.wav'
 SYMBOL_RATE = 31.25
 varicode = varicode()
 

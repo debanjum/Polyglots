@@ -1,8 +1,10 @@
+import struct
+
+
 # Varicode class for GoodPSK.
 class varicode:
     """This class implements the PSK31 varicode alphabet."""
     def __init__(self):
-        import struct
         self.varichar = {value: key for key, value in self.characters.iteritems()}
 
     def encode(self, text):
