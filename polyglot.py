@@ -2,7 +2,9 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Polyglot
-# Generated: Thu Jul 14 18:59:54 2016
+# Author: Debanjum Singh Solanky
+# Description: RTTY45, PSK31 Polyglot Signal Transmitter
+# Generated: Mon Jul 18 09:18:53 2016
 ##################################################
 
 from PyQt4 import Qt
@@ -70,10 +72,10 @@ class polyglot(gr.top_block, Qt.QWidget):
                 fractional_bw=None,
         )
         self.qtgui_sink_x_0 = qtgui.sink_c(
-        	1024, #fftsize
+        	256, #fftsize
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
-        	psk_samp_rate*8, #bw
+        	psk_samp_rate*sps, #bw
         	"RTTY45_PSK31_POLYGLOT", #name
         	True, #plotfreq
         	True, #plotwaterfall
@@ -90,7 +92,7 @@ class polyglot(gr.top_block, Qt.QWidget):
           mod_code="none",
           differential=True,
           samples_per_symbol=sps,
-          excess_bw=0.35,
+          excess_bw=1,
           verbose=False,
           log=False,
           )
@@ -109,20 +111,20 @@ class polyglot(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_complex_to_float_0, 0))
-        self.connect((self.blocks_complex_to_float_0, 0), (self.audio_sink_0, 0))
-        self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_0, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))
-        self.connect((self.blocks_wavfile_source_0, 0), (self.blocks_float_to_complex_0_0, 0))
         self.connect((self.blocks_float_to_complex_0_0, 0), (self.blocks_add_const_vxx_0_0, 0))
-        self.connect((self.blocks_add_const_vxx_0_0, 0), (self.blocks_multiply_const_vxx_0_0_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0_0_0, 0), (self.rational_resampler_xxx_0_0, 0))
-        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_xx_1, 1))
-        self.connect((self.rational_resampler_xxx_0_0, 0), (self.blocks_multiply_xx_1, 0))
-        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_multiply_xx_0, 1))
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.qtgui_sink_x_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.rational_resampler_xxx_0_0, 0), (self.blocks_multiply_xx_1, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_xx_1, 1))
+        self.connect((self.blocks_multiply_const_vxx_0_0_0, 0), (self.rational_resampler_xxx_0_0, 0))
+        self.connect((self.blocks_add_const_vxx_0_0, 0), (self.blocks_multiply_const_vxx_0_0_0, 0))
+        self.connect((self.blocks_wavfile_source_0, 0), (self.blocks_float_to_complex_0_0, 0))
+        self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.blocks_complex_to_float_0, 0), (self.audio_sink_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_complex_to_float_0, 0))
 
 
 # QT sink close method reimplementation
@@ -136,6 +138,7 @@ class polyglot(gr.top_block, Qt.QWidget):
 
     def set_sps(self, sps):
         self.sps = sps
+        self.qtgui_sink_x_0.set_frequency_range(0, self.psk_samp_rate*self.sps)
 
     def get_rtty_samp_rate(self):
         return self.rtty_samp_rate
@@ -148,7 +151,7 @@ class polyglot(gr.top_block, Qt.QWidget):
 
     def set_psk_samp_rate(self, psk_samp_rate):
         self.psk_samp_rate = psk_samp_rate
-        self.qtgui_sink_x_0.set_frequency_range(0, self.psk_samp_rate*8)
+        self.qtgui_sink_x_0.set_frequency_range(0, self.psk_samp_rate*self.sps)
 
     def get_out_samp_rate(self):
         return self.out_samp_rate
