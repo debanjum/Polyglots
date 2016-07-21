@@ -4,12 +4,11 @@
 # Title: Polyglot
 # Author: Debanjum Singh Solanky
 # Description: RTTY45, PSK31 Polyglot Signal Transmitter
-# Generated: Mon Jul 18 09:18:53 2016
+# Generated: Thu Jul 21 09:15:49 2016
 ##################################################
 
 from PyQt4 import Qt
 from gnuradio import analog
-from gnuradio import audio
 from gnuradio import blocks
 from gnuradio import digital
 from gnuradio import eng_notation
@@ -92,11 +91,13 @@ class polyglot(gr.top_block, Qt.QWidget):
           mod_code="none",
           differential=True,
           samples_per_symbol=sps,
-          excess_bw=1,
-          verbose=False,
-          log=False,
+          excess_bw=0.35,
+          verbose=True,
+          log=True,
           )
         self.blocks_wavfile_source_0 = blocks.wavfile_source("/home/linux/Scripts/GnuRadio/polyglot/.rtty45.wav", True)
+        self.blocks_wavfile_sink_0 = blocks.wavfile_sink("/home/linux/Scripts/GnuRadio/polyglot/polyglot.wav", 1, out_samp_rate, 8)
+        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, out_samp_rate)
         self.blocks_multiply_xx_1 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
         self.blocks_multiply_const_vxx_0_0_0 = blocks.multiply_const_vcc((0.9, ))
@@ -105,26 +106,26 @@ class polyglot(gr.top_block, Qt.QWidget):
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, "/home/linux/Scripts/GnuRadio/polyglot/.pskquickfox.bin", True)
         self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
         self.blocks_add_const_vxx_0_0 = blocks.add_const_vcc((0.3, ))
-        self.audio_sink_0 = audio.sink(out_samp_rate, "", True)
         self.analog_sig_source_x_0 = analog.sig_source_c(out_samp_rate, analog.GR_SIN_WAVE, 500, 1, 0)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_float_to_complex_0_0, 0), (self.blocks_add_const_vxx_0_0, 0))
-        self.connect((self.blocks_multiply_xx_0, 0), (self.qtgui_sink_x_0, 0))
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 0))
-        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_multiply_xx_0, 1))
-        self.connect((self.rational_resampler_xxx_0_0, 0), (self.blocks_multiply_xx_1, 0))
-        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_xx_1, 1))
-        self.connect((self.blocks_multiply_const_vxx_0_0_0, 0), (self.rational_resampler_xxx_0_0, 0))
-        self.connect((self.blocks_add_const_vxx_0_0, 0), (self.blocks_multiply_const_vxx_0_0_0, 0))
-        self.connect((self.blocks_wavfile_source_0, 0), (self.blocks_float_to_complex_0_0, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_0, 0))
-        self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.blocks_complex_to_float_0, 0), (self.audio_sink_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_complex_to_float_0, 0))
+        self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))
+        self.connect((self.blocks_wavfile_source_0, 0), (self.blocks_float_to_complex_0_0, 0))
+        self.connect((self.blocks_add_const_vxx_0_0, 0), (self.blocks_multiply_const_vxx_0_0_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0_0_0, 0), (self.rational_resampler_xxx_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_xx_1, 1))
+        self.connect((self.rational_resampler_xxx_0_0, 0), (self.blocks_multiply_xx_1, 0))
+        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.qtgui_sink_x_0, 0))
+        self.connect((self.blocks_float_to_complex_0_0, 0), (self.blocks_add_const_vxx_0_0, 0))
+        self.connect((self.blocks_throttle_0, 0), (self.blocks_wavfile_sink_0, 0))
+        self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_throttle_0, 0))
 
 
 # QT sink close method reimplementation
@@ -159,6 +160,7 @@ class polyglot(gr.top_block, Qt.QWidget):
     def set_out_samp_rate(self, out_samp_rate):
         self.out_samp_rate = out_samp_rate
         self.analog_sig_source_x_0.set_sampling_freq(self.out_samp_rate)
+        self.blocks_throttle_0.set_sample_rate(self.out_samp_rate)
 
 if __name__ == '__main__':
     import ctypes
