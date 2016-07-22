@@ -4,7 +4,7 @@
 # Title: Polyglot
 # Author: Debanjum S. Solanky
 # Description: RTTY45, PSK31 Polyglot Signal Transmitter
-# Generated: Fri Jul 22 00:39:57 2016
+# Generated: Fri Jul 22 00:59:17 2016
 ##################################################
 
 from PyQt4 import Qt
@@ -100,8 +100,8 @@ class polyglot2(gr.top_block, Qt.QWidget):
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.9, ))
         self.blocks_int_to_float_0_0 = blocks.int_to_float(1, fsk_scale)
         self.blocks_int_to_float_0 = blocks.int_to_float(1, fsk_scale)
-        self.blocks_file_source_0_0_0 = blocks.file_source(gr.sizeof_int*1, "/home/linux/Scripts/GnuRadio/polyglot/fsksecond.bin", True)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, "/home/linux/Scripts/GnuRadio/polyglot/pskquickfox.bin", True)
+        self.blocks_file_source_0_0_0 = blocks.file_source(gr.sizeof_int*1, "fsksecond.bin", True)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, "pskquickfox.bin", True)
         self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
         self.blocks_add_xx_0 = blocks.add_vff(1)
         self.band_pass_filter_0_1 = filter.interp_fir_filter_fff(1, firdes.band_pass(
