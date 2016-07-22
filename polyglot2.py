@@ -1,22 +1,11 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 ##################################################
-# GNU Radio Python Flow Graph
+# Gnuradio Python Flow Graph
 # Title: Polyglot
 # Author: Debanjum S. Solanky
 # Description: RTTY45, PSK31 Polyglot Signal Transmitter
-# Generated: Thu Jul 21 16:24:38 2016
+# Generated: Fri Jul 22 00:39:57 2016
 ##################################################
-
-if __name__ == '__main__':
-    import ctypes
-    import sys
-    if sys.platform.startswith('linux'):
-        try:
-            x11 = ctypes.cdll.LoadLibrary('libX11.so')
-            x11.XInitThreads()
-        except:
-            print "Warning: failed to XInitThreads()"
 
 from PyQt4 import Qt
 from gnuradio import analog
@@ -33,7 +22,6 @@ from optparse import OptionParser
 import sip
 import sys
 
-
 class polyglot2(gr.top_block, Qt.QWidget):
 
     def __init__(self):
@@ -41,9 +29,9 @@ class polyglot2(gr.top_block, Qt.QWidget):
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Polyglot")
         try:
-            self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
+             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
-            pass
+             pass
         self.top_scroll_layout = Qt.QVBoxLayout()
         self.setLayout(self.top_scroll_layout)
         self.top_scroll = Qt.QScrollArea()
@@ -59,12 +47,14 @@ class polyglot2(gr.top_block, Qt.QWidget):
         self.settings = Qt.QSettings("GNU Radio", "polyglot2")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
+
         ##################################################
         # Variables
         ##################################################
         self.sps = sps = 8
         self.samp_rate = samp_rate = 32000
         self.psk_samp_rate = psk_samp_rate = 31.25
+        self.fsk_scale = fsk_scale = 1.2
         self.freq = freq = 1000
         self.bw = bw = 75
 
@@ -92,16 +82,13 @@ class polyglot2(gr.top_block, Qt.QWidget):
         self._qtgui_sink_x_0_win = sip.wrapinstance(self.qtgui_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_sink_x_0_win)
         
-        self.qtgui_sink_x_0.enable_rf_freq(False)
         
-        
-          
         self.digital_psk_mod_0 = digital.psk.psk_mod(
           constellation_points=2,
           mod_code="none",
           differential=True,
           samples_per_symbol=sps,
-          excess_bw=0.06,
+          excess_bw=0.01,
           verbose=False,
           log=False,
           )
@@ -110,13 +97,12 @@ class polyglot2(gr.top_block, Qt.QWidget):
         self.blocks_multiply_xx_1 = blocks.multiply_vff(1)
         self.blocks_multiply_xx_0_0 = blocks.multiply_vff(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vff(1)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.700, ))
-        self.blocks_int_to_float_0_0 = blocks.int_to_float(1, 0.7)
-        self.blocks_int_to_float_0 = blocks.int_to_float(1, 0.7)
-        self.blocks_file_source_0_0_0 = blocks.file_source(gr.sizeof_int*1, "fsksecond.bin", True)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, "pskquickfox.bin", True)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.9, ))
+        self.blocks_int_to_float_0_0 = blocks.int_to_float(1, fsk_scale)
+        self.blocks_int_to_float_0 = blocks.int_to_float(1, fsk_scale)
+        self.blocks_file_source_0_0_0 = blocks.file_source(gr.sizeof_int*1, "/home/linux/Scripts/GnuRadio/polyglot/fsksecond.bin", True)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, "/home/linux/Scripts/GnuRadio/polyglot/pskquickfox.bin", True)
         self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
-        self.blocks_and_const_xx_0 = blocks.and_const_ii(1)
         self.blocks_add_xx_0 = blocks.add_vff(1)
         self.band_pass_filter_0_1 = filter.interp_fir_filter_fff(1, firdes.band_pass(
         	1, samp_rate, 500, 1500, 10, firdes.WIN_HAMMING, 6.76))
@@ -127,33 +113,33 @@ class polyglot2(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_1_0, 0))    
-        self.connect((self.analog_sig_source_x_1, 0), (self.blocks_multiply_xx_1, 0))    
-        self.connect((self.band_pass_filter_0_1, 0), (self.audio_sink_0, 0))    
-        self.connect((self.band_pass_filter_0_1, 0), (self.qtgui_sink_x_0, 0))    
-        self.connect((self.blocks_add_xx_0, 0), (self.band_pass_filter_0_1, 0))    
-        self.connect((self.blocks_and_const_xx_0, 0), (self.blocks_int_to_float_0_0, 0))    
-        self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_multiply_xx_1, 1))    
-        self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_multiply_xx_1_0, 1))    
-        self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))    
-        self.connect((self.blocks_file_source_0_0_0, 0), (self.blocks_int_to_float_0, 0))    
-        self.connect((self.blocks_file_source_0_0_0, 0), (self.blocks_not_xx_0, 0))    
-        self.connect((self.blocks_int_to_float_0, 0), (self.blocks_multiply_xx_0, 0))    
-        self.connect((self.blocks_int_to_float_0_0, 0), (self.blocks_multiply_xx_0_0, 1))    
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_0, 0))    
-        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_add_xx_0, 1))    
-        self.connect((self.blocks_multiply_xx_0_0, 0), (self.blocks_add_xx_0, 0))    
-        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_multiply_xx_0, 1))    
-        self.connect((self.blocks_multiply_xx_1_0, 0), (self.blocks_multiply_xx_0_0, 0))    
-        self.connect((self.blocks_not_xx_0, 0), (self.blocks_and_const_xx_0, 0))    
-        self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))    
-        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_complex_to_float_0, 0))    
+        self.connect((self.blocks_int_to_float_0_0, 0), (self.blocks_multiply_xx_0_0, 1))
+        self.connect((self.blocks_multiply_xx_1_0, 0), (self.blocks_multiply_xx_0_0, 0))
+        self.connect((self.blocks_file_source_0_0_0, 0), (self.blocks_not_xx_0, 0))
+        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.blocks_multiply_xx_0_0, 0), (self.blocks_add_xx_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.blocks_int_to_float_0, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.blocks_file_source_0_0_0, 0), (self.blocks_int_to_float_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.band_pass_filter_0_1, 0))
+        self.connect((self.band_pass_filter_0_1, 0), (self.qtgui_sink_x_0, 0))
+        self.connect((self.band_pass_filter_0_1, 0), (self.audio_sink_0, 0))
+        self.connect((self.analog_sig_source_x_1, 0), (self.blocks_multiply_xx_1, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_1_0, 0))
+        self.connect((self.blocks_not_xx_0, 0), (self.blocks_int_to_float_0_0, 0))
+        self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_complex_to_float_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_multiply_xx_1, 1))
+        self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_multiply_xx_1_0, 1))
+        self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))
 
+
+# QT sink close method reimplementation
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "polyglot2")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
-
 
     def get_sps(self):
         return self.sps
@@ -166,10 +152,10 @@ class polyglot2(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.analog_sig_source_x_1.set_sampling_freq(self.samp_rate)
         self.band_pass_filter_0_1.set_taps(firdes.band_pass(1, self.samp_rate, 500, 1500, 10, firdes.WIN_HAMMING, 6.76))
         self.qtgui_sink_x_0.set_frequency_range(0, self.samp_rate)
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
 
     def get_psk_samp_rate(self):
         return self.psk_samp_rate
@@ -177,41 +163,49 @@ class polyglot2(gr.top_block, Qt.QWidget):
     def set_psk_samp_rate(self, psk_samp_rate):
         self.psk_samp_rate = psk_samp_rate
 
+    def get_fsk_scale(self):
+        return self.fsk_scale
+
+    def set_fsk_scale(self, fsk_scale):
+        self.fsk_scale = fsk_scale
+        self.blocks_int_to_float_0_0.set_scale(self.fsk_scale)
+        self.blocks_int_to_float_0.set_scale(self.fsk_scale)
+
     def get_freq(self):
         return self.freq
 
     def set_freq(self, freq):
         self.freq = freq
-        self.analog_sig_source_x_0.set_frequency(self.freq-self.bw)
         self.analog_sig_source_x_1.set_frequency(self.freq+self.bw)
+        self.analog_sig_source_x_0.set_frequency(self.freq-self.bw)
 
     def get_bw(self):
         return self.bw
 
     def set_bw(self, bw):
         self.bw = bw
-        self.analog_sig_source_x_0.set_frequency(self.freq-self.bw)
         self.analog_sig_source_x_1.set_frequency(self.freq+self.bw)
+        self.analog_sig_source_x_0.set_frequency(self.freq-self.bw)
 
-
-def main(top_block_cls=polyglot2, options=None):
-
-    from distutils.version import StrictVersion
-    if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
-        style = gr.prefs().get_string('qtgui', 'style', 'raster')
-        Qt.QApplication.setGraphicsSystem(style)
+if __name__ == '__main__':
+    import ctypes
+    import os
+    if os.name == 'posix':
+        try:
+            x11 = ctypes.cdll.LoadLibrary('libX11.so')
+            x11.XInitThreads()
+        except:
+            print "Warning: failed to XInitThreads()"
+    parser = OptionParser(option_class=eng_option, usage="%prog: [options]")
+    (options, args) = parser.parse_args()
     qapp = Qt.QApplication(sys.argv)
-
-    tb = top_block_cls()
+    tb = polyglot2()
     tb.start()
     tb.show()
-
     def quitting():
         tb.stop()
         tb.wait()
     qapp.connect(qapp, Qt.SIGNAL("aboutToQuit()"), quitting)
     qapp.exec_()
+    tb = None #to clean up Qt widgets
 
-
-if __name__ == '__main__':
-    main()

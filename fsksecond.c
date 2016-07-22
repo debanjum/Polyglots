@@ -3,7 +3,6 @@
 int fs=0xFFFFFFFF;
 int nulls=0x00000000;
 
-
 //32 thousand samples per second
 int guess=1024*32;
 int bitwidth=728;
@@ -80,10 +79,7 @@ int main(){
     for(int j=0;j<sizeof(message);j++){
       fsksym(foo,message[j]); //Q or 1
     }
-    
-
   }
-
 
   fclose(foo);
 }
