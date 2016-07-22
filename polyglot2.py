@@ -4,7 +4,7 @@
 # Title: Polyglot
 # Author: Debanjum S. Solanky
 # Description: RTTY45, PSK31 Polyglot Signal Transmitter
-# Generated: Fri Jul 22 00:39:57 2016
+# Generated: Fri Jul 22 00:52:47 2016
 ##################################################
 
 from PyQt4 import Qt
