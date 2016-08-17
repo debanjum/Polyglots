@@ -22,7 +22,7 @@ from optparse import OptionParser
 import sip
 import sys
 
-class polyglot(gr.top_block, Qt.QWidget):
+class polyglot2(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Polyglot")
@@ -44,7 +44,7 @@ class polyglot(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "polyglot")
+        self.settings = Qt.QSettings("GNU Radio", "polyglot2")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
@@ -137,7 +137,7 @@ class polyglot(gr.top_block, Qt.QWidget):
 
 # QT sink close method reimplementation
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "polyglot")
+        self.settings = Qt.QSettings("GNU Radio", "polyglot2")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -199,7 +199,7 @@ if __name__ == '__main__':
     parser = OptionParser(option_class=eng_option, usage="%prog: [options]")
     (options, args) = parser.parse_args()
     qapp = Qt.QApplication(sys.argv)
-    tb = polyglot()
+    tb = polyglot2()
     tb.start()
     tb.show()
     def quitting():
