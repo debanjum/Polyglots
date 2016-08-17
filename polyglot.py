@@ -4,7 +4,7 @@
 # Title: Polyglot
 # Author: Debanjum S. Solanky
 # Description: RTTY45, PSK31 Polyglot Signal Transmitter
-# Generated: Tue Aug 16 15:43:35 2016
+# Generated: Tue Aug 16 21:11:28 2016
 ##################################################
 
 from PyQt4 import Qt
@@ -100,7 +100,7 @@ class polyglot(gr.top_block, Qt.QWidget):
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.9, ))
         self.blocks_int_to_float_0_0 = blocks.int_to_float(1, fsk_scale)
         self.blocks_int_to_float_0 = blocks.int_to_float(1, fsk_scale)
-        self.blocks_file_source_0_0_0 = blocks.file_source(gr.sizeof_int*1, "fskmessage.bin", True)
+        self.blocks_file_source_0_0_0 = blocks.file_source(gr.sizeof_int*1, "baudotmessage.bin", True)
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, "varicodemessage.bin", True)
         self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
         self.blocks_add_xx_0 = blocks.add_vff(1)
@@ -124,7 +124,6 @@ class polyglot(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_add_xx_0, 0), (self.band_pass_filter_0_1, 0))
         self.connect((self.band_pass_filter_0_1, 0), (self.qtgui_sink_x_0, 0))
         self.connect((self.band_pass_filter_0_1, 0), (self.audio_sink_0, 0))
-        self.connect((self.analog_sig_source_x_1, 0), (self.blocks_multiply_xx_1, 0))
         self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_1_0, 0))
         self.connect((self.blocks_not_xx_0, 0), (self.blocks_int_to_float_0_0, 0))
         self.connect((self.digital_psk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
@@ -133,6 +132,7 @@ class polyglot(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_multiply_xx_1, 1))
         self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_multiply_xx_1_0, 1))
         self.connect((self.blocks_file_source_0, 0), (self.digital_psk_mod_0, 0))
+        self.connect((self.analog_sig_source_x_1, 0), (self.blocks_multiply_xx_1, 0))
 
 
 # QT sink close method reimplementation
@@ -152,10 +152,10 @@ class polyglot(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.analog_sig_source_x_1.set_sampling_freq(self.samp_rate)
         self.band_pass_filter_0_1.set_taps(firdes.band_pass(1, self.samp_rate, 500, 1500, 10, firdes.WIN_HAMMING, 6.76))
         self.qtgui_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
+        self.analog_sig_source_x_1.set_sampling_freq(self.samp_rate)
 
     def get_psk_samp_rate(self):
         return self.psk_samp_rate
@@ -176,16 +176,16 @@ class polyglot(gr.top_block, Qt.QWidget):
 
     def set_freq(self, freq):
         self.freq = freq
-        self.analog_sig_source_x_1.set_frequency(self.freq+self.bw)
         self.analog_sig_source_x_0.set_frequency(self.freq-self.bw)
+        self.analog_sig_source_x_1.set_frequency(self.freq+self.bw)
 
     def get_bw(self):
         return self.bw
 
     def set_bw(self, bw):
         self.bw = bw
-        self.analog_sig_source_x_1.set_frequency(self.freq+self.bw)
         self.analog_sig_source_x_0.set_frequency(self.freq-self.bw)
+        self.analog_sig_source_x_1.set_frequency(self.freq+self.bw)
 
 if __name__ == '__main__':
     import ctypes

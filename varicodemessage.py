@@ -7,7 +7,7 @@ import struct
 
 # Varicode class for GoodPSK.
 class varicode:
-    """This class implements the PSK31 varicode alphabet."""
+    """This class implements the PSK31 varicode alphabets"""
     def __init__(self):
         self.varichar = {value: key for key, value in self.characters.iteritems()}
 
@@ -27,7 +27,7 @@ class varicode:
         size = 8  # define size of varicode chunks, 8 for byte
 
         # convert text to varicode, add 8-bit 0 preamble and 1 postamble
-        varicode = self.repeat('0', size) + self.encode(text) + self.repeat('1', size)
+        varicode = self.characters['STX'] + self.encode(' ' + text) + self.characters['ETX']
         varicode += self.repeat('1', len(varicode) % size)  # pad varicode text to whole no. of bytes
 
         with open(filename, 'wb') as fp:
@@ -37,8 +37,10 @@ class varicode:
 
     delim = "00"
     characters = {
-        "\n": "11101",
-        " ":  "1",
+        # Control Characters
+        "STX": "1011101101",
+        "ETX": "1101110111",
+        "\n": "1111111101",
 
         # Numbers
         "0":  "10110111",
@@ -53,6 +55,7 @@ class varicode:
         "9":  "110110111",
 
         # Symbols
+        " ":  "1",
         "'":  "101111111",
         "?":  "1010101111",
         "!":  "111111111",
@@ -146,7 +149,7 @@ if __name__ == "__main__":
 
     # set default filename, message
     filename = 'varicodemessage.bin'
-    message = 'anybody out there ?'
+    message = 'A quick brown fox jumps over the lazy dog'
 
     # parse filename, message from arguments if passed
     try:

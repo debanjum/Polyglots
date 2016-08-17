@@ -14,11 +14,11 @@ QUICK-START
 $ git clone https://github.com/debanjum/polyglots.git  # Cloning Repository
 $ cd polyglots
 $ make           # Compile the baudotmessage.c script
-$ make run       # Generate BPSK, RTTY message files and Run Polyglot Script
+$ make run       # Generate PSK31, RTTY message files and Run Polyglot Script
 ```
 3. Install [fldigi](http://www.w1hkj.com/) or an equivalent digital modes software
 4. Decode polyglot:
-   -To decode the BPSK-31 transmissions. In the Menu Select: Op_Mode > PSK > BPSK-31
+   -To decode the PSK-31 transmissions. In the Menu Select: Op_Mode > PSK > BPSK-31
    -To decode the RTTY-45 transmissions. In the Menu Select: Op_Mode > RTTY > RTTY-45
 6. Use the fldigi signal browser to locate the decoded message.
 

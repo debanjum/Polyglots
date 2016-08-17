@@ -50,28 +50,32 @@ void fsksym(FILE* file, char symbol){
 }
 
 int main(){
-    const char *filename = "fskmessage.bin";
+    const char *filename = "baudotmessage.bin";
 
     const char message[]={
+	0x1F,  //LTRS_SHIFT
+	0x04,  //Space
 	0x03,  //A
 	0x0C,  //N
 	0x15,  //Y
-	0x19,  //B
-	0x18,  //O
-	0x09,  //D
+	0x04,  //Space
+	0x0A,  //R
+	0x10,  //T
+	0x10,  //T
 	0x15,  //Y
-	0x08,  //Space
+	0x04,  //Space
 	0x18,  //O
 	0x07,  //U
 	0x10,  //T
-	0x08,  //Space
+	0x04,  //Space
 	0x10,  //T
 	0x14,  //H
 	0x01,  //E
 	0x0A,  //R
 	0x01,  //E
-	0x08,  //Space
-	0x19   //?
+	0x1B,  //FIG_SHIFT
+	0x19,  //?
+	0x02,  //LF('\n')
     };
 
     FILE *foo=fopen(filename,"wb");
