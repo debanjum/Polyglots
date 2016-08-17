@@ -456,7 +456,7 @@
       <value>2</value>
     </param>
     <param>
-      <key>num_inputs</key>
+      <key>vlen</key>
       <value>1</value>
     </param>
     <param>

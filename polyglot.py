@@ -4,7 +4,7 @@
 # Title: Polyglot
 # Author: Debanjum S. Solanky
 # Description: RTTY45, PSK31 Polyglot Signal Transmitter
-# Generated: Tue Aug 16 21:11:28 2016
+# Generated: Tue Aug 16 21:27:52 2016
 ##################################################
 
 from PyQt4 import Qt
@@ -22,7 +22,7 @@ from optparse import OptionParser
 import sip
 import sys
 
-class polyglot2(gr.top_block, Qt.QWidget):
+class polyglot(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Polyglot")
@@ -44,7 +44,7 @@ class polyglot2(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "polyglot2")
+        self.settings = Qt.QSettings("GNU Radio", "polyglot")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
@@ -137,7 +137,7 @@ class polyglot2(gr.top_block, Qt.QWidget):
 
 # QT sink close method reimplementation
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "polyglot2")
+        self.settings = Qt.QSettings("GNU Radio", "polyglot")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -199,7 +199,7 @@ if __name__ == '__main__':
     parser = OptionParser(option_class=eng_option, usage="%prog: [options]")
     (options, args) = parser.parse_args()
     qapp = Qt.QApplication(sys.argv)
-    tb = polyglot2()
+    tb = polyglot()
     tb.start()
     tb.show()
     def quitting():
